@@ -113,18 +113,16 @@ HAVING MIN(o.ord_amount);
 /*
  7.Display the Id and Name of the Product ordered after “2021-10-05”.
 */
-
--- select o.prod_id from orders o where o.ord_amount>'2021-10-05'=
--- (select pd.pro_id from productdetails where pd.prod_id=(select o.prod_id from orders o where o.ord_amount>'2021-10-05')
-select pd.pro_id from productdetails pd where pd.prod_id=(select o.prod_id from orders o where o.ord_amount>'2021-10-05' group by o.prod_id)group by pd.pro_id;
-
-
-
-select o.prod_id from orders o where o.ord_amount>'2021-10-05';
-select pd.pro_id from productdetails where pd.prod_id= above query;
-select p.pro_name from product p where p.pro_id=above query;
-
-
+SELECT 
+    p.pro_id, p.pro_name
+FROM
+    product AS p
+        JOIN
+    productdetails AS pd ON p.pro_id = pd.pro_id
+        JOIN
+    orders AS o ON pd.prod_id = o.prod_id
+        AND o.ord_date > '2021-10-05'
+GROUP BY p.pro_id;
 
 
 /*
